@@ -12,14 +12,20 @@ import com.atpro.passhub.R
 import com.atpro.passhub.ui.theme.*
 
 @Composable
-fun NavigationScreen() {
-    // Scaffold bertindak sebagai kerangka layar yang memiliki Bottom Bar
+fun NavigationScreen(
+    onAddPasswordClick: () -> Unit = {},
+    onAccountClick: () -> Unit = {}
+) {
     Scaffold(
         bottomBar = { PasshubBottomNavigationBar() },
-        containerColor = CoklatBackground // Warna latar belakang utama
+        containerColor = CoklatBackground
     ) { innerPadding ->
-        // HomeScreen dipanggil di sini dan diberi padding agar tidak tertutup navbar
-        HomeScreen(modifier = Modifier.padding(innerPadding))
+        // Teruskan fungsi klik ke HomeScreen
+        HomeScreen(
+            modifier = Modifier.padding(innerPadding),
+            onAddPasswordClick = onAddPasswordClick,
+            onAccountClick = onAccountClick
+        )
     }
 }
 
@@ -27,7 +33,7 @@ fun NavigationScreen() {
 fun PasshubBottomNavigationBar() {
     // Anda bisa mengganti nilai ini nanti jika menggunakan NavController sungguhan
     var selectedItem by remember { mutableStateOf(0) }
-    val items = listOf("Accounts", "Generator", "Settings")
+    val items = listOf("Accounts", "Checkup", "Settings")
 
     NavigationBar(
         containerColor = PutihPure,
@@ -37,13 +43,12 @@ fun PasshubBottomNavigationBar() {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
-                    // Gunakan ikon bawaan Material sementara jika Anda belum punya file drawable-nya
                     Icon(
                         painter = painterResource(
                             id = when (index) {
-                                0 -> R.drawable.ic_shield_account // Ganti dengan ikon shield Anda
-                                1 -> R.drawable.ic_document       // Ganti dengan ikon dokumen Anda
-                                else -> R.drawable.ic_settings    // Ganti dengan ikon gear/settings Anda
+                                0 -> R.drawable.ic_lock
+                                1 -> R.drawable.ic_key
+                                else -> R.drawable.ic_settings
                             }
                         ),
                         contentDescription = item,
@@ -60,7 +65,7 @@ fun PasshubBottomNavigationBar() {
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = CoklatLight,
                     unselectedIconColor = Color.Gray,
-                    indicatorColor = PutihPure // Menghilangkan background bulat bawaan Material3
+                    indicatorColor = PutihPure
                 )
             )
         }

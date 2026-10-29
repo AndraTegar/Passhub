@@ -25,7 +25,11 @@ import com.atpro.passhub.R
 import com.atpro.passhub.ui.theme.*
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onAddPasswordClick: () -> Unit = {},
+    onAccountClick: () -> Unit = {}
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -46,14 +50,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         ) {
             // Item 1: Tombol Add Password
             item {
-                AddPasswordCard(onClick = { /* TODO: Pindah ke Add Screen */ })
+                AddPasswordCard(onClick = onAddPasswordClick)
             }
 
             // Item 2 dst: List Akun Google (contoh data statis 5 buah)
             items(5) {
                 AccountCard(
                     title = "accounts.google.com",
-                    subtitle = "2 accounts"
+                    subtitle = "2 accounts",
+                    onClick = onAccountClick
                 )
             }
         }
@@ -67,12 +72,11 @@ fun HeaderSection() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        // Ikon Shield Kiri
         Icon(
-            painter = painterResource(id = R.drawable.ic_shield_dark), // Ganti dengan nama ikon Anda
+            painter = painterResource(id = R.drawable.ic_app_logo),
             contentDescription = "Security Status",
-            tint = CoklatGelap,
-            modifier = Modifier.size(32.dp)
+            tint = Color.Unspecified,
+            modifier = Modifier.size(45.dp)
         )
 
         // Kotak Pencarian (Search)
@@ -149,11 +153,12 @@ fun AddPasswordCard(onClick: () -> Unit) {
 }
 
 @Composable
-fun AccountCard(title: String, subtitle: String) {
+fun AccountCard(title: String, subtitle: String, onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp),
+            .height(72.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = CoklatGelap)
     ) {

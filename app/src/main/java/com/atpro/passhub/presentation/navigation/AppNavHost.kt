@@ -5,8 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.atpro.passhub.presentation.screens.WelcomeScreen
-import com.atpro.passhub.presentation.screens.NavigationScreen
+import com.atpro.passhub.presentation.screens.*
 
 @Composable
 fun AppNavHost(
@@ -28,10 +27,33 @@ fun AppNavHost(
             )
         }
 
-        // Layar Kedua: NavigationScreen (Navbar)
-        // Pastikan parameter di sini sama dengan rute yang dipanggil di atas
+        // Layar Utama (Navbar + HomeScreen)
         composable(Screen.Home.route) {
-            NavigationScreen()
+            NavigationScreen(
+                onAddPasswordClick = {
+                    // Berpindah ke AddPasswordScreen
+                    navController.navigate(Screen.AddPassword.route)
+                },
+                onAccountClick = {
+                    // Berpindah ke AccountDetailScreen (Edit Password)
+                    navController.navigate(Screen.AccountDetail.route)
+                }
+            )
+        }
+
+        // Layar Tambah Password
+        composable(Screen.AddPassword.route) {
+            AddPasswordScreen(
+                onCloseClick = { navController.popBackStack() }, // Kembali ke Home
+                onSaveClick = { navController.popBackStack() }   // Simpan & Kembali ke Home
+            )
+        }
+
+        // Layar Detail / Edit Password
+        composable(Screen.AccountDetail.route) {
+            AccountDetailScreen(
+                onBackClick = { navController.popBackStack() } // Kembali ke Home
+            )
         }
     }
 }
